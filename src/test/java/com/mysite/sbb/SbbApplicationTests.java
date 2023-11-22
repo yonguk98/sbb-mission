@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,10 +27,12 @@ class SbbApplicationTests {
 	private QuestionRepository questionRepository;
 	@Autowired
 	private AnswerRepository answerRepository;
+	@Autowired
+	private QuestionService questionService;
 
 
-	@BeforeEach
-	void beforeEach() {
+	@Test
+	void testJpa1() {
 		Question q1 = Question.builder()
 						.subject("sbb가 무엇인가요?")
 						.content("sbb에 대해서 알고 싶습니다.")
@@ -54,12 +57,6 @@ class SbbApplicationTests {
 				.createDate(LocalDateTime.now())
 				.build();
 		this.answerRepository.save(a);
-	}
-
-	@AfterEach
-	void afterEach(){
-		questionRepository.deleteAll();
-		answerRepository.deleteAll();
 	}
 
 	@Test
@@ -147,6 +144,15 @@ class SbbApplicationTests {
 
 		assertEquals(1, answerList.size());
 		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+	}
+
+	@Test
+	void testJpa() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("테스트 데이터입니다:[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
+		}
 	}
 
 }
