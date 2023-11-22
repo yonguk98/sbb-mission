@@ -15,7 +15,7 @@ public class AnswerService {
 
     public void create(Question question, String content) {
         Answer answer = Answer.builder()
-                .content("네 자동으로 생성됩니다.")
+                .content(content)
                 .question(question)
                 .createDate(LocalDateTime.now())
                 .build();
